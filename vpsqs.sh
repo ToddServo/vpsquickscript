@@ -27,13 +27,13 @@ EOF
 # 12. INSTALL COMPLETE / display new SSH and login info
 
 # Add to log command and display output on screen
-# echo " `date +%d.%m.%Y" "%H:%M:%S` : $MESSAGE" | tee -a "$LOGFILE"
+# echo " `date +%d.%m.%Y" "%H:%M:%S` : $MESSAGE"
 # Add to log command and do not display output on screen
-# echo " `date +%d.%m.%Y" "%H:%M:%S` : $MESSAGE" >> $LOGFILE 2>&1
+# echo " `date +%d.%m.%Y" "%H:%M:%S` : $MESSAGE"
 
-# write to log only, no output on screen # echo  -e "---------------------------------------------------- " >> $LOGFILE 2>&1
-# write to log only, no output on screen # echo  -e "    ** This entry gets written to the log file directly. **" >> $LOGFILE 2>&1
-# write to log only, no output on screen # echo  -e "---------------------------------------------------- \n" >> $LOGFILE 2>&1
+# write to log only, no output on screen # echo  -e "---------------------------------------------------- "
+# write to log only, no output on screen # echo  -e "    ** This entry gets written to the log file directly. **"
+# write to log only, no output on screen # echo  -e "---------------------------------------------------- \n"
 
 function setup_environment() {
 ### add colors ###
@@ -101,11 +101,11 @@ SSHDFILE='/etc/ssh/sshd_config'
 function begin_log() {
 # Create Log File and Begin
 printf "${lightcyan}"
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-echo -e " `date +%m.%d.%Y_%H:%M:%S` : SCRIPT STARTED SUCCESSFULLY " | tee -a "$LOGFILE"
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-echo -e "------- install some stuff VPS Hardening Script --------- " | tee -a "$LOGFILE"
-echo -e "---------------------------------------------------- \n" | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- "
+echo -e " `date +%m.%d.%Y_%H:%M:%S` : SCRIPT STARTED SUCCESSFULLY "
+echo -e "---------------------------------------------------- "
+echo -e "------- install some stuff VPS Hardening Script --------- "
+echo -e "---------------------------------------------------- \n"
 printf "${nocolor}"
 sleep 2
 }
@@ -121,9 +121,9 @@ sleep 2
 function create_swap() {
 # Check for and create swap file if necessary
 	printf "${yellow}"
-	echo -e "------------------------------------------------- " | tee -a "$LOGFILE"
-	echo -e " `date +%m.%d.%Y_%H:%M:%S` : CHECK FOR AND CREATE SWAP " | tee -a "$LOGFILE"
-	echo -e "------------------------------------------------- \n" | tee -a "$LOGFILE"
+	echo -e "------------------------------------------------- "
+	echo -e " `date +%m.%d.%Y_%H:%M:%S` : CHECK FOR AND CREATE SWAP "
+	echo -e "------------------------------------------------- \n"
 	printf "${white}"
 	
 	# Check for swap file - if none, create one
@@ -132,9 +132,9 @@ if [[ -n $swaponState ]]
 then
 clear
 		printf "${lightred}"
-		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-		echo -e " `date +%m.%d.%Y_%H:%M:%S` : Swap exists- No changes made " | tee -a "$LOGFILE"
-		echo -e "---------------------------------------------------- \n"  | tee -a "$LOGFILE"
+		echo -e "---------------------------------------------------- "
+		echo -e " `date +%m.%d.%Y_%H:%M:%S` : Swap exists- No changes made "
+		echo -e "---------------------------------------------------- \n" 
 		sleep 2
 		printf "${nocolor}"
 		sleep 2
@@ -179,10 +179,10 @@ sudo sysctl -a | grep vm.swappiness
 clear
 		
 		printf "${lightgreen}"	
-		echo -e "-------------------------------------------------- " | tee -a "$LOGFILE"
-		echo -e " `date +%m.%d.%Y_%H:%M:%S` : SWAP CREATED SUCCESSFULLY " | tee -a "$LOGFILE"
+		echo -e "-------------------------------------------------- "
+		echo -e " `date +%m.%d.%Y_%H:%M:%S` : SWAP CREATED SUCCESSFULLY "
 		echo -e "--> Thanks @Cryptotron for supplying swap code <-- "
-		echo -e "-------------------------------------------------- \n" | tee -a "$LOGFILE"
+		echo -e "-------------------------------------------------- \n"
 		sleep 2
 		printf "${nocolor}"
 	fi
@@ -223,16 +223,16 @@ function update_upgrade() {
 
 # NOTE I learned the hard way that you must put a "\" BEFORE characters "\" and "`"
 echo -e "${lightcyan}"
-printf "  ___  ____    _   _           _       _ \n" | tee -a "$LOGFILE"
-printf " / _ \/ ___|  | | | |_ __   __| | __ _| |_ ___ \n" | tee -a "$LOGFILE"
-printf "| | | \\___ \\  | | | | '_ \\ / _\` |/ _\` | __/ _ \\ \n" | tee -a "$LOGFILE"
-printf "| |_| |___) | | |_| | |_) | (_| | (_| | ||  __/ \n" | tee -a "$LOGFILE"
-printf " \___/|____/   \___/| .__/ \__,_|\__,_|\__\___| \n" | tee -a "$LOGFILE"
+printf "  ___  ____    _   _           _       _ \n"
+printf " / _ \/ ___|  | | | |_ __   __| | __ _| |_ ___ \n"
+printf "| | | \\___ \\  | | | | '_ \\ / _\` |/ _\` | __/ _ \\ \n"
+printf "| |_| |___) | | |_| | |_) | (_| | (_| | ||  __/ \n"
+printf " \___/|____/   \___/| .__/ \__,_|\__,_|\__\___| \n"
 printf "                    |_| \n"
 printf "${yellow}"
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-echo -e " `date +%m.%d.%Y_%H:%M:%S` : INITIATING SYSTEM UPDATE " | tee -a "$LOGFILE"
-echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
+echo -e "---------------------------------------------------- "
+echo -e " `date +%m.%d.%Y_%H:%M:%S` : INITIATING SYSTEM UPDATE "
+echo -e "---------------------------------------------------- "
 printf "${white}"
 sleep 1
 
@@ -269,10 +269,9 @@ sleep 1
 }
 #STEP 2 - Create New User
 		printf "${lightgreen}"	
-		echo -e "-------------------------------------------------- " | tee -a "$LOGFILE"
-		echo -e " `date +%m.%d.%Y_%H:%M:%S` :  CREATE A NEW ADMIN USER " | tee -a "$LOGFILE"
-		echo -e "--> Never use Root for login. Make a User you can Rembmer <-- "
-		echo -e "-------------------------------------------------- \n" | tee -a "$LOGFILE"
+		echo -e "-------------------------------------------------- "
+		echo -e " `date +%m.%d.%Y_%H:%M:%S` :  CREATE A NEW ADMIN USER "
+		echo -e "-------------------------------------------------- \n"
 		sleep 2
 		printf "${nocolor}"
 
@@ -292,9 +291,9 @@ sleep 1
 
 
 		printf "${lightred}"
-		echo -e "---------------------------------------------------- " | tee -a "$LOGFILE"
-		echo -e " `date +%m.%d.%Y_%H:%M:%S` : SSH CHANGES " | tee -a "$LOGFILE"
-		echo -e "---------------------------------------------------- \n"  | tee -a "$LOGFILE"
+		echo -e "---------------------------------------------------- "
+		echo -e " `date +%m.%d.%Y_%H:%M:%S` : SSH CHANGES "
+		echo -e "---------------------------------------------------- \n" 
 		sleep 2
 		printf "${nocolor}"
 		sleep 2
@@ -457,10 +456,9 @@ sleep 3
 
 
 		printf "${lightgreen}"	
-		echo -e "-------------------------------------------------- " | tee -a "$LOGFILE"
-		echo -e " `date +%m.%d.%Y_%H:%M:%S` :  I didnt start the  " | tee -a "$LOGFILE"
-		echo -e "-----------------> FIREWALL CONFIG <--------------- "
-		echo -e "-------------------------------------------------- \n" | tee -a "$LOGFILE"
+		echo -e "-------------------------------------------------- "
+		echo -e " `date +%m.%d.%Y_%H:%M:%S` :  I didnt start the  "
+		echo -e "-------------------------------------------------- \n"
 		sleep 2
 		printf "${nocolor}"
 
