@@ -265,6 +265,8 @@ sudo yum -y update
 clear
 echo -e "\e[1mSystem has been updated successfully\e[0m"
 sleep 1
+
+}
 #STEP 2 - Create New User
 		printf "${lightgreen}"	
 		echo -e "-------------------------------------------------- " | tee -a "$LOGFILE"
@@ -518,7 +520,7 @@ echo 'Initial server setup has been completed successfully'
 echo '-------------------------------------------------------'
 echo 'Details:'
 echo '1. System has been updated'
-echo '2. CRON has been installed and started'https://github.com/lockntross/vpsquickscript
+echo '2. CRON has been installed and started'
 echo -e "3. User \e[1m${newUser}\e[0m with the root privileges has been created"
 echo '4. Public SSH key for new user has been added successfully'
 echo '5. SSH config has been updated:'
