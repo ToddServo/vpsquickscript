@@ -8,11 +8,11 @@
 
 #  and Begin
 clear
-echo -e "---------------------------------------------------- "
-echo -e " `date +%m.%d.%Y_%H:%M:%S` : SCRIPT STARTED SUCCESSFULLY "
-echo -e "---------------------------------------------------- "
-echo -e "------- install some stuff VPS Hardening Script --------- "
-echo -e "---------------------------------------------------- \n"
+echo "---------------------------------------------------- "
+echo " `date +%m.%d.%Y_%H:%M:%S` : SCRIPT STARTED SUCCESSFULLY "
+echo "---------------------------------------------------- "
+echo "------- install some stuff VPS Hardening Script --------- "
+echo "---------------------------------------------------- \n"
 sleep 2
 clear
 
@@ -32,18 +32,18 @@ sudo yum install -y qemu-guest-agent
 
 
 # Check for and create swap file if necessary
-	echo -e "------------------------------------------------- "
-	echo -e " `date +%m.%d.%Y_%H:%M:%S` : CHECK FOR AND CREATE SWAP "
-	echo -e "------------------------------------------------- \n"
+	echo "------------------------------------------------- "
+	echo " `date +%m.%d.%Y_%H:%M:%S` : CHECK FOR AND CREATE SWAP "
+	echo "------------------------------------------------- \n"
 
 # Check for swap file - if none, create one
 swaponState=$(swapon -s)
 if [[ -n $swaponState ]]
 then
 clear
-		echo -e "---------------------------------------------------- "
-		echo -e " `date +%m.%d.%Y_%H:%M:%S` : Swap exists- No changes made "
-		echo -e "---------------------------------------------------- \n" 
+		echo "---------------------------------------------------- "
+		echo " `date +%m.%d.%Y_%H:%M:%S` : Swap exists- No changes made "
+		echo "---------------------------------------------------- \n" 
 		sleep 2
 	else
 	    
@@ -79,16 +79,16 @@ sudo sysctl -w vm.swappiness=30
 
 #Final output
 clear
-echo -e "Swap file with size \e[1m$swapSizeValue Mb\e[0m  has been created successfully"
+echo "Swap file with size \e[1m$swapSizeValue Mb\e[0m  has been created successfully"
 sudo free | grep Swap
 
 echo 'Swapines value'
 sudo sysctl -a | grep vm.swappiness
 clear
-		echo -e "-------------------------------------------------- "
-		echo -e " `date +%m.%d.%Y_%H:%M:%S` : SWAP CREATED SUCCESSFULLY "
-		echo -e "------>    \e[1m$swapSizeValue Mb\e[0m    <------- "
-		echo -e "-------------------------------------------------- \n"
+		echo "-------------------------------------------------- "
+		echo " `date +%m.%d.%Y_%H:%M:%S` : SWAP CREATED SUCCESSFULLY "
+		echo "------>    \e[1m$swapSizeValue Mb\e[0m    <------- "
+		echo "-------------------------------------------------- \n"
 		sleep 2
 	fi
 
@@ -116,7 +116,7 @@ clear
 echo 'CRON has been successfully installed and started'
 echo 'You can edit CRON config in /etc/yum/yum-cron.conf'
 echo 'Do not forget to restart CRON service after editing config' 
-echo -e "\e[1mCRON has been successfully installed and started\e[0m"
+echo "\e[1mCRON has been successfully installed and started\e[0m"
 sleep 2
 clear
 
@@ -132,9 +132,9 @@ printf "| | | \\___ \\  | | | | '_ \\ / _\` |/ _\` | __/ _ \\ \n"
 printf "| |_| |___) | | |_| | |_) | (_| | (_| | ||  __/ \n"
 printf " \___/|____/   \___/| .__/ \__,_|\__,_|\__\___| \n"
 printf "                    |_| \n"
-echo -e "---------------------------------------------------- "
-echo -e " `date +%m.%d.%Y_%H:%M:%S` : INITIATING SYSTEM UPDATE "
-echo -e "---------------------------------------------------- "
+echo "---------------------------------------------------- "
+echo " `date +%m.%d.%Y_%H:%M:%S` : INITIATING SYSTEM UPDATE "
+echo "---------------------------------------------------- "
 sleep 2
 
 
@@ -143,14 +143,14 @@ clear
 echo 'This script will help you to configure your server'
 echo '---------------------------------------------'
 echo 'Steps:'
-echo -e "\e[1mSTEP 1:\e[0m Update the system"
-echo -e "\e[1mSTEP 2:\e[0m Create New User"
-echo -e "\e[1mSTEP 3:\e[0m Add Public Key Authentication"
-echo -e "\e[1mSTEP 4:\e[0m Configuring SSH"
-echo -e "\e[1mSTEP 5:\e[0m Configuring a Basic Firewall"
-echo -e "\e[1mSTEP 6:\e[0m Configuring Timezones and NTP"
+echo "\e[1mSTEP 1:\e[0m Update the system"
+echo "\e[1mSTEP 2:\e[0m Create New User"
+echo "\e[1mSTEP 3:\e[0m Add Public Key Authentication"
+echo "\e[1mSTEP 4:\e[0m Configuring SSH"
+echo "\e[1mSTEP 5:\e[0m Configuring a Basic Firewall"
+echo "\e[1mSTEP 6:\e[0m Configuring Timezones and NTP"
 echo '---------------------------------------------'
-echo -e "\e[1mATTENTION!!!\e[0m"
+echo "\e[1mATTENTION!!!\e[0m"
 echo 'This script will disable root login'
 echo 'Also this script will disable authentication by password'
 echo 'Only authentication by ssh key will be allowed'
@@ -159,23 +159,34 @@ sleep 1
 clear
 
 #STEP 1 - Update the system
-echo -e "\e[1mGET READY TO WAIT: System Update \e[0m" 
+echo "\e[1mGET READY TO WAIT: System Update \e[0m" 
 
 sudo yum -y update
 
 clear
-echo -e "\e[1mSystem has been updated successfully\e[0m"
+echo "\e[1mSystem has been updated successfully\e[0m"
 sleep 1
 
+
+clear
+echo "\e[1mCheck to install FIREWALLD\e[0m"
+sleep 1
+
+sudo yum install firewalld
+sudo systemctl start firewalld
+sudo systemctl enable firewalld
+sudo systemctl status firewalld
+clear
+
 #STEP 2 - Create New User
-		echo -e "-------------------------------------------------- "
-		echo -e " `date +%m.%d.%Y_%H:%M:%S` :  CREATE A NEW ADMIN USER "
-		echo -e "-------------------------------------------------- \n"
+		echo "-------------------------------------------------- "
+		echo " `date +%m.%d.%Y_%H:%M:%S` :  CREATE A NEW ADMIN USER "
+		echo "-------------------------------------------------- \n"
 		sleep 2
 
-echo -e "\e[1mCreate New User \e[0m" 
+echo "\e[1mCreate New User \e[0m" 
 
-read -p "Enter new username (e.g. admin): " newUser
+read -p "Enter new username (e.g. admin): " $newUser
 #Create User
 sudo adduser "$newUser"
 sudo passwd "$newUser"
@@ -183,15 +194,15 @@ sudo passwd "$newUser"
 sudo passwd -a "$newUser" wheel
 
 clear
-echo -e "\e[1mUser '${newUser}' with the root privileges has been created\e[0m"
+echo "\e[1mUser '${newUser}' with the root privileges has been created\e[0m"
 sleep 1
-		echo -e "---------------------------------------------------- "
-		echo -e " `date +%m.%d.%Y_%H:%M:%S` : SSH CHANGES "
-		echo -e "---------------------------------------------------- \n" 
+		echo "---------------------------------------------------- "
+		echo " `date +%m.%d.%Y_%H:%M:%S` : SSH CHANGES "
+		echo "---------------------------------------------------- \n" 
 		sleep 2
 
 #STEP 4 - Configuring SSH
-echo -e "\e[1mSTEP 4: Configuring SSH \e[0m" 
+echo "\e[1mSTEP 4: Configuring SSH \e[0m" 
 
 read -p "Enter new SSH port (47979-65536): " newSSHPort
 
@@ -275,16 +286,16 @@ sudo sed -i "s/PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/s
 sudo systemctl reload sshd.service
 
 clear
-echo -e "\e[1mSSH config has been HARDENED successfully\e[0m"
+echo "\e[1mSSH config has been HARDENED successfully\e[0m"
 sleep 3
 clear
-		echo -e "-------------------------------------------------- "
-		echo -e " `date +%m.%d.%Y_%H:%M:%S` :  I didnt start the  "
-		echo -e "-------------------------------------------------- \n"
+		echo "-------------------------------------------------- "
+		echo " `date +%m.%d.%Y_%H:%M:%S` :  I didnt start the  "
+		echo "-------------------------------------------------- \n"
 		sleep 1
 
 #STEP 5 - Configuring a Basic Firewall
-echo -e "\e[1mSTEP 5: Configuring a Basic Firewall \e[0m" 
+echo "\e[1mSTEP 5: Configuring a Basic Firewall \e[0m" 
 
 sudo systemctl start firewalld
 
@@ -309,12 +320,12 @@ sudo systemctl enable firewalld
 
 #firewall-cmd --list-ports
 
-echo -e "\e[1mFirewall has been updated successfully\e[0m"
+echo "\e[1mFirewall has been updated successfully\e[0m"
 sleep 1
 clear
 
 #STEP 6 - Configuring Timezones and NTP
-echo -e "\e[1mSTEP 6: Configuring Timezones and NTP \e[0m" 
+echo "\e[1mSTEP 6: Configuring Timezones and NTP \e[0m" 
 
 #Timezone
 read -p "Enter server timezone (e.g. America/Chicago): " serverTimezone
@@ -324,14 +335,14 @@ sudo timedatectl set-timezone "$serverTimezone"
 #timedatectl -> check current settings
 
 #NTP (Network Time Protocol Synchronization)
-echo -e "\e[1mEnable NTP\e[0m"
+echo "\e[1mEnable NTP\e[0m"
 
 sudo yum -y install ntp
 sudo systemctl start ntpd
 sudo systemctl enable ntpd
 
 clear
-echo -e "\e[1mNetwork Time Protocol Synchronization (NTP) has been successfully installed and enabled\e[0m"
+echo "\e[1mNetwork Time Protocol Synchronization (NTP) has been successfully installed and enabled\e[0m"
 
 #Final output
 echo '-------------------------------------------------------'
@@ -340,10 +351,10 @@ echo '-------------------------------------------------------'
 echo 'Details:'
 echo '1. System has been updated'
 echo '2. CRON has been installed and started'
-echo -e "3. User \e[1m${newUser}\e[0m with the root privileges has been created"
+echo "3. User \e[1m${newUser}\e[0m with the root privileges has been created"
 echo '4. Public SSH key for new user has been added successfully'
 echo '5. SSH config has been updated:'
-echo -e "  - New SSH port is \e[1m${newSSHPort}\e[0m"
+echo "  - New SSH port is \e[1m${newSSHPort}\e[0m"
 echo '  - Root login has been disabled'
 echo '  - Authentication by password has been disabled'
 echo '  - SSH config backup: /etc/ssh/sshd_config_BACKUP'
