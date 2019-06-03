@@ -16,6 +16,14 @@ echo -e "---------------------------------------------------- \n"
 sleep 2
 clear
 
+
+echo \n
+echo 'Install QEMU guest agent tools'
+echo '------------------------------------------------'
+# Install 
+sudo yum install -y qemu-guest-agent
+
+
 #########################
 ## CHECK & CREATE SWAP ##
 #########################
@@ -192,12 +200,12 @@ sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config_BACKUP
 
 #Change SSH port
 sudo sed -i "/#Port 22/a Port ${newSSHPort}" /etc/ssh/sshd_config
-
+sudo service sshd restart
 
 
 
 echo 'FOR REAL THOUGH, ANYTHING AFTER THIS DISABLES ROOT.'
-echo ' --=Make sure you have Oxidized already setup=-- '
+echo ' --=Make sure you have KeyBox already setup=-- '
 		sleep 2
 echo 'abort with ctrl+c'
 echo 'PRESS ANY KEY TO CONTINUE'
