@@ -12,12 +12,12 @@ echo "---------------------------------------------------- "
 echo " `date +%m.%d.%Y_%H:%M:%S` : SCRIPT STARTED SUCCESSFULLY "
 echo "---------------------------------------------------- "
 echo "------- install some stuff VPS Hardening Script --------- "
-echo "---------------------------------------------------- \n"
+echo "----------------------------------------------------"
 sleep 2
 clear
 
 
-echo \n
+echo ''
 echo 'Install QEMU guest agent tools'
 echo '------------------------------------------------'
 # Install 
@@ -34,7 +34,7 @@ sudo yum install -y qemu-guest-agent
 # Check for and create swap file if necessary
 	echo "------------------------------------------------- "
 	echo " `date +%m.%d.%Y_%H:%M:%S` : CHECK FOR AND CREATE SWAP "
-	echo "------------------------------------------------- \n"
+	echo "-------------------------------------------------"
 
 # Check for swap file - if none, create one
 swaponState=$(swapon -s)
@@ -43,12 +43,12 @@ then
 clear
 		echo "---------------------------------------------------- "
 		echo " `date +%m.%d.%Y_%H:%M:%S` : Swap exists- No changes made "
-		echo "---------------------------------------------------- \n" 
+		echo "----------------------------------------------------" 
 		sleep 2
 	else
 	    
 clear
-echo \n
+echo ''
 echo 'This script will create swap file on your server'
 echo '------------------------------------------------'
 read -p "Swap size (Mb): " swapSizeValue
@@ -79,7 +79,7 @@ sudo sysctl -w vm.swappiness=30
 
 #Final output
 clear
-echo "Swap file with size \e[1m$swapSizeValue Mb\e[0m  has been created successfully"
+echo "Swap file with size $swapSizeValue Mb  has been created successfully"
 sudo free | grep Swap
 
 echo 'Swapines value'
@@ -87,8 +87,8 @@ sudo sysctl -a | grep vm.swappiness
 clear
 		echo "-------------------------------------------------- "
 		echo " `date +%m.%d.%Y_%H:%M:%S` : SWAP CREATED SUCCESSFULLY "
-		echo "------>    \e[1m$swapSizeValue Mb\e[0m    <------- "
-		echo "-------------------------------------------------- \n"
+		echo "------>    $swapSizeValue Mb    <------- "
+		echo "--------------------------------------------------"
 		sleep 2
 	fi
 
@@ -116,7 +116,7 @@ clear
 echo 'CRON has been successfully installed and started'
 echo 'You can edit CRON config in /etc/yum/yum-cron.conf'
 echo 'Do not forget to restart CRON service after editing config' 
-echo "\e[1mCRON has been successfully installed and started\e[0m"
+echo "CRON has been successfully installed and started"
 sleep 2
 clear
 
@@ -143,14 +143,14 @@ clear
 echo 'This script will help you to configure your server'
 echo '---------------------------------------------'
 echo 'Steps:'
-echo "\e[1mSTEP 1:\e[0m Update the system"
-echo "\e[1mSTEP 2:\e[0m Create New User"
-echo "\e[1mSTEP 3:\e[0m Add Public Key Authentication"
-echo "\e[1mSTEP 4:\e[0m Configuring SSH"
-echo "\e[1mSTEP 5:\e[0m Configuring a Basic Firewall"
-echo "\e[1mSTEP 6:\e[0m Configuring Timezones and NTP"
+echo "STEP 1: Update the system"
+echo "STEP 2: Create New User"
+echo "STEP 3: Add Public Key Authentication"
+echo "STEP 4: Configuring SSH"
+echo "STEP 5: Configuring a Basic Firewall"
+echo "STEP 6: Configuring Timezones and NTP"
 echo '---------------------------------------------'
-echo "\e[1mATTENTION!!!\e[0m"
+echo "ATTENTION!!!"
 echo 'This script will disable root login'
 echo 'Also this script will disable authentication by password'
 echo 'Only authentication by ssh key will be allowed'
@@ -159,17 +159,17 @@ sleep 1
 clear
 
 #STEP 1 - Update the system
-echo "\e[1mGET READY TO WAIT: System Update \e[0m" 
+echo "GET READY TO WAIT: System Update " 
 
 sudo yum -y update
 
 clear
-echo "\e[1mSystem has been updated successfully\e[0m"
+echo "System has been updated successfully"
 sleep 1
 
 
 clear
-echo "\e[1mCheck to install FIREWALLD\e[0m"
+echo "Check to install FIREWALLD"
 sleep 1
 
 sudo yum install firewalld
@@ -181,29 +181,52 @@ clear
 #STEP 2 - Create New User
 		echo "-------------------------------------------------- "
 		echo " `date +%m.%d.%Y_%H:%M:%S` :  CREATE A NEW ADMIN USER "
-		echo "-------------------------------------------------- \n"
+		echo "--------------------------------------------------"
 		sleep 2
 
-echo "\e[1mCreate New User \e[0m" 
+echo "Create New User " 
 
-read -p "Enter new username (e.g. admin): " $newUser
+read -p "Enter new username (e.g. admin): " newUser
 #Create User
+echo "I am creating ${newUser}"
 sudo adduser "$newUser"
 sudo passwd "$newUser"
 #Grant new user the root privileges
 sudo passwd -a "$newUser" wheel
 
 clear
-echo "\e[1mUser '${newUser}' with the root privileges has been created\e[0m"
+echo "User '${newUser}' with the root privileges has been created"
 sleep 1
 		echo "---------------------------------------------------- "
 		echo " `date +%m.%d.%Y_%H:%M:%S` : SSH CHANGES "
-		echo "---------------------------------------------------- \n" 
+		echo "----------------------------------------------------" 
 		sleep 2
 
-#STEP 4 - Configuring SSH
-echo "\e[1mSTEP 4: Configuring SSH \e[0m" 
 
+
+mkdir /root/.ssh
+chmod 700 /root/.ssh
+touch /root/.ssh/authorized_keys 
+chown root:root /root/.ssh -R
+chmod 600 /root/.ssh/authorized_keys
+service sshd restart
+clear
+
+
+echo 'FOR REAL THOUGH, ANYTHING AFTER THIS '
+echo 'CHANGES DEFAULT PORT AND DISABLES ROOT.'
+echo ' --=Make sure you have KeyBox already setup=-- '
+		sleep 4
+echo 'Abort with CTRL+C'
+echo 'PRESS ANY KEY TO CONTINUE'
+read -n 1 -s
+clear
+
+
+
+
+#STEP 4 - Configuring SSH
+echo "STEP 4: Configuring SSH " 
 read -p "Enter new SSH port (47979-65536): " newSSHPort
 
 #Backup SSH config
@@ -212,16 +235,6 @@ sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config_BACKUP
 #Change SSH port
 sudo sed -i "/#Port 22/a Port ${newSSHPort}" /etc/ssh/sshd_config
 sudo service sshd restart
-
-
-
-echo 'FOR REAL THOUGH, ANYTHING AFTER THIS DISABLES ROOT.'
-echo ' --=Make sure you have KeyBox already setup=-- '
-		sleep 2
-echo 'abort with ctrl+c'
-echo 'PRESS ANY KEY TO CONTINUE'
-read -n 1 -s
-clear
 
 
 #To explicitly disallow remote login from accounts with empty passwords, add or correct the following line in /etc/ssh/sshd_config:
@@ -286,16 +299,16 @@ sudo sed -i "s/PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/s
 sudo systemctl reload sshd.service
 
 clear
-echo "\e[1mSSH config has been HARDENED successfully\e[0m"
+echo "SSH config has been HARDENED successfully"
 sleep 3
 clear
 		echo "-------------------------------------------------- "
 		echo " `date +%m.%d.%Y_%H:%M:%S` :  I didnt start the  "
-		echo "-------------------------------------------------- \n"
+		echo "--------------------------------------------------"
 		sleep 1
 
 #STEP 5 - Configuring a Basic Firewall
-echo "\e[1mSTEP 5: Configuring a Basic Firewall \e[0m" 
+echo "STEP 5: Configuring a Basic Firewall " 
 
 sudo systemctl start firewalld
 
@@ -320,29 +333,29 @@ sudo systemctl enable firewalld
 
 #firewall-cmd --list-ports
 
-echo "\e[1mFirewall has been updated successfully\e[0m"
+echo "Firewall has been updated successfully"
 sleep 1
 clear
 
 #STEP 6 - Configuring Timezones and NTP
-echo "\e[1mSTEP 6: Configuring Timezones and NTP \e[0m" 
+echo "STEP 6: Configuring Timezones and NTP " 
 
 #Timezone
 read -p "Enter server timezone (e.g. America/Chicago): " serverTimezone
 #sudo timedatectl list-timezones
-sudo timedatectl set-timezone "$serverTimezone"
+sudo timedatectl set-timezone "${serverTimezone}"
 
 #timedatectl -> check current settings
 
 #NTP (Network Time Protocol Synchronization)
-echo "\e[1mEnable NTP\e[0m"
+echo "Enable NTP"
 
 sudo yum -y install ntp
 sudo systemctl start ntpd
 sudo systemctl enable ntpd
 
 clear
-echo "\e[1mNetwork Time Protocol Synchronization (NTP) has been successfully installed and enabled\e[0m"
+echo "Network Time Protocol Synchronization (NTP) has been successfully installed and enabled"
 
 #Final output
 echo '-------------------------------------------------------'
@@ -351,10 +364,10 @@ echo '-------------------------------------------------------'
 echo 'Details:'
 echo '1. System has been updated'
 echo '2. CRON has been installed and started'
-echo "3. User \e[1m${newUser}\e[0m with the root privileges has been created"
+echo "3. User ${newUser} with the root privileges has been created"
 echo '4. Public SSH key for new user has been added successfully'
 echo '5. SSH config has been updated:'
-echo "  - New SSH port is \e[1m${newSSHPort}\e[0m"
+echo "  - New SSH port is ${newSSHPort}"
 echo '  - Root login has been disabled'
 echo '  - Authentication by password has been disabled'
 echo '  - SSH config backup: /etc/ssh/sshd_config_BACKUP'
