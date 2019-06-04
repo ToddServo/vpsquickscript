@@ -166,16 +166,6 @@ sudo yum -y update
 clear
 echo "System has been updated successfully"
 sleep 1
-
-
-clear
-echo "Check to install FIREWALLD"
-sleep 1
-
-sudo yum install firewalld
-sudo systemctl start firewalld
-sudo systemctl enable firewalld
-sudo systemctl status firewalld
 clear
 
 #STEP 2 - Create New User
@@ -189,10 +179,21 @@ echo "Create New User "
 read -p "Enter new username (e.g. admin): " newUser
 #Create User
 echo "I am creating ${newUser}"
-sudo adduser "$newUser"
-sudo passwd "$newUser"
+sudo adduser "${newUser}"
+sudo passwd "${newUser}"
 #Grant new user the root privileges
-sudo passwd -a "$newUser" wheel
+usermod -a -G wheel "${newUser}"
+#Dont use this below why is it even in here
+#sudo passwd -a "${newUser}" wheel
+
+mkdir /home/${newUser}/.ssh
+chmod 700 /home/${newUser}/.ssh
+touch /home/${newUser}/.ssh/authorized_keys 
+chown ${newUser}:${newUser} /home/${newUser}/.ssh -R
+chmod 600 /home/${newUser}/.ssh/authorized_keys
+service sshd restart
+clear
+
 
 clear
 echo "User '${newUser}' with the root privileges has been created"
@@ -202,15 +203,6 @@ sleep 1
 		echo "----------------------------------------------------" 
 		sleep 2
 
-
-
-mkdir /root/.ssh
-chmod 700 /root/.ssh
-touch /root/.ssh/authorized_keys 
-chown root:root /root/.ssh -R
-chmod 600 /root/.ssh/authorized_keys
-service sshd restart
-clear
 
 
 echo 'FOR REAL THOUGH, ANYTHING AFTER THIS '
@@ -235,6 +227,13 @@ sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config_BACKUP
 #Change SSH port
 sudo sed -i "/#Port 22/a Port ${newSSHPort}" /etc/ssh/sshd_config
 sudo service sshd restart
+sleep 1
+clear
+
+
+
+
+
 
 
 #To explicitly disallow remote login from accounts with empty passwords, add or correct the following line in /etc/ssh/sshd_config:
@@ -310,7 +309,14 @@ clear
 #STEP 5 - Configuring a Basic Firewall
 echo "STEP 5: Configuring a Basic Firewall " 
 
+echo "Check to install FIREWALLD"
+sleep 1
+
+sudo yum install firewalld
 sudo systemctl start firewalld
+sudo systemctl enable firewalld
+sudo systemctl status firewalld
+
 
 #If port SSH has NOT changed
 #sudo firewall-cmd --permanent --add-service=ssh
