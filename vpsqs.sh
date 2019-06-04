@@ -183,8 +183,7 @@ sudo adduser "${newUser}"
 sudo passwd "${newUser}"
 #Grant new user the root privileges
 usermod -a -G wheel "${newUser}"
-#Dont use this below why is it even in here
-#sudo passwd -a "${newUser}" wheel
+
 
 mkdir /home/${newUser}/.ssh
 chmod 700 /home/${newUser}/.ssh
