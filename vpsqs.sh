@@ -343,6 +343,31 @@ echo "Firewall has been updated successfully"
 sleep 1
 clear
 
+#STEP before 6 - Fail2Ban
+echo "Install Fail2Ban"
+sudo yum -y install epel-release
+sudo yum -y install fail2ban
+
+#Create the Config file
+sudo touch /etc/fail2ban/jail.local
+
+#Add the following:
+echo "[sshd]">>/etc/fail2ban/jail.local
+echo "enabled = true">>/etc/fail2ban/jail.local
+echo "banaction = iptables-multiport">>/etc/fail2ban/jail.local
+echo "port = ${newSSHPort}">>/etc/fail2ban/jail.local
+echo "logpath = /var/log/auth.log">>/etc/fail2ban/jail.local
+echo "maxretry = 10">>/etc/fail2ban/jail.local
+echo "findtime = 43200">>/etc/fail2ban/jail.local
+echo "bantime = 86400">>/etc/fail2ban/jail.local
+
+#Then fire up fail2ban
+systemctl start fail2ban
+sudo systemctl enable fail2ban
+sudo systemctl restart fail2ban
+sleep 1
+clear
+
 #STEP 6 - Configuring Timezones and NTP
 echo "STEP 6: Configuring Timezones and NTP " 
 
